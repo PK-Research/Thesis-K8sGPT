@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: frontend-deployment
+  labels:
+    app: frontend6
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: frontend6
+  template:
+    metadata:
+      labels:
+        app: frontend6
+    spec:
+      containers:
+      - name: frontend
+        image: hashicorp/http-echo:0.2.3
+        args:
+          - "-listen=:80"
+          - "-text=Hello from Task 6 Frontend!"
+        ports:
+        - containerPort: 80

@@ -1,0 +1,56 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: multi-deployment
+  labels:
+    app: multi
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: multi
+  template:
+    metadata:
+      labels:
+        app: multi
+    spec:
+      serviceAccountName: default
+      containers:
+      - name: main
+        image: hashicorp/http-echo:0.2.3
+        args:
+          - "-listen=:80"
+          - "-text=Hello from Task 4 main container!"
+        ports:
+          - containerPort: 80
+        readinessProbe:
+          httpGet:
+            path: /healthz
+            port: 80
+          initialDelaySeconds: 5
+          periodSeconds: 5
+        resources:
+          requests:
+            cpu: 100m
+            memory: 128Mi
+
+      - name: sidecar
+        image: bitnami/kubectl:latest
+        env:
+          - name: SIDE_CAR_VAR
+            valueFrom:
+              configMapKeyRef:
+                name: sidecar-config
+                key: sidecar-key
+        command: ["/bin/sh", "-c"]
+        args:
+          - |
+            while true; do
+              echo "Listing pods..."
+              kubectl get pods
+              sleep 5
+            done
+        resources:
+          requests:
+            cpu: 50m
+            memory: 64Mi

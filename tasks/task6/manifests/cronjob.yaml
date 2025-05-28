@@ -1,0 +1,23 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: cronjob-data-collector
+spec:
+  schedule: "* * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+          - name: collector
+            image: busybox
+            env:
+              - name: DB_PASS
+                valueFrom:
+                  secretKeyRef:
+                    name: myapp-secret
+                    key: DB_PASS
+            command: ["sh", "-c"]
+            args:
+              - echo "Collecting data... (task6 CronJob)" && exit 0
+          restartPolicy: OnFailure
