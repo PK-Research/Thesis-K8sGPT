@@ -1,0 +1,14 @@
+# REPLACE WITH CONTENTS OF YOUR k8sgpt.yaml!
+# This is just an example.
+ai:
+    providers:
+        - name: openai
+          model: chatgpt-4o-latest
+          password: ADD_YOUR_APIKEY_HERE
+          temperature: 0.7
+          topp: 0.5
+          topk: 50
+          customheaders: []
+    defaultprovider: ""
+kubeconfig: "/home/YOUR_USER_HERE/.kube/config"
+kubecontext: "minikube"
