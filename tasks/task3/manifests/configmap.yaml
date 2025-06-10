@@ -1,0 +1,6 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: task3-config
+data:
+  title: "Hello from Task 3"
